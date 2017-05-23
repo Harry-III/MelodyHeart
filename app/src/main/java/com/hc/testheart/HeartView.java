@@ -55,6 +55,7 @@ public class HeartView extends SurfaceView implements SurfaceHolder.Callback {
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
+        angle = 10;
         singleThread.shutdown(); //当时视图消失的时候，关闭线程
     }
 
