@@ -7,7 +7,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.support.v4.view.MotionEventCompat;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -46,9 +45,17 @@ public class HeartView extends SurfaceView implements SurfaceHolder.Callback {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        if (MotionEventCompat.getActionMasked(event) == MotionEvent.ACTION_UP) {
-            reDraw();
+        switch (MotionEventCompat.getActionMasked(event)) {
+            case MotionEvent.ACTION_DOWN:
+                drawText(event);
+                break;
+            case MotionEvent.ACTION_UP:
+                reDraw();
+                break;
+            default:
+                break;
         }
+
         return true;
     }
 
@@ -90,10 +97,17 @@ public class HeartView extends SurfaceView implements SurfaceHolder.Callback {
         surfaceHolder.addCallback(this);   //界面添加回调方法
         garden = new Garden();
         backgroundPaint = new Paint();
-//        backgroundPaint.setColor(Color.rgb(0xff, 0xff, 0xe0));
-        backgroundPaint.setColor(Color.WHITE);   //设置画布的背景
+        backgroundPaint.setColor(Color.rgb(0xff, 0xff, 0xe0));
+//        backgroundPaint.setColor(Color.WHITE);   //设置画布的背景
 
         singleThread = Executors.newSingleThreadExecutor();
+    }
+
+    private void drawText(MotionEvent event) {
+        if (mListener != null) {
+            mListener.drawText(isDrawing, event.getX(), event.getY());
+        }
+
     }
 
     public void reDraw() {
@@ -120,13 +134,17 @@ public class HeartView extends SurfaceView implements SurfaceHolder.Callback {
             public void run() {
                 if (isDrawing) return;
                 isDrawing = true;
-                Log.d("asdf", "current Thread:" + Thread.currentThread());
 
                 while (isDrawing) {
                     Bloom bloom = getBloom(angle);
                     if (bloom != null) {
                         blooms.add(bloom);
                     }
+
+                    if (mListener != null) {
+                        mListener.createImage(angle);
+                    }
+
                     if (angle >= 30) {
                         isDrawing = false;
                         break;
@@ -140,7 +158,6 @@ public class HeartView extends SurfaceView implements SurfaceHolder.Callback {
                         e.printStackTrace();
                     }
                 }
-//                isDrawing = false;
             }
         });
 
@@ -151,10 +168,9 @@ public class HeartView extends SurfaceView implements SurfaceHolder.Callback {
         for (Bloom b : blooms) {
             b.draw(canvas);
         }
+
         Canvas c = surfaceHolder.lockCanvas();
-
         c.drawBitmap(bm, 0, 0, null);
-
         surfaceHolder.unlockCanvasAndPost(c);
 
     }
@@ -192,4 +208,17 @@ public class HeartView extends SurfaceView implements SurfaceHolder.Callback {
 
         return new Point(offsetX + (int) x, offsetY + (int) y);
     }
+
+    public ShowImageListener mListener;
+
+    public void setShowImageListener(ShowImageListener listener) {
+        mListener = listener;
+    }
+
+    public interface ShowImageListener {
+        void createImage(float alpha);
+
+        void drawText(boolean isDraw, float xLocation, float yLocation);
+    }
+
 }
