@@ -36,12 +36,16 @@ public class MainActivity extends AppCompatActivity implements AudioManager.OnAu
                     public void run() {
                         imageView.setImageResource(R.drawable.ic_lock_open_yellow_24dp);
                         float change;
-                        if (alpha < 22) {
+                        if (alpha < 18) {
+                            change = 0f;
+                        } else if (alpha < 22) {
                             change = alpha / 200;
-                        } else if (alpha < 26) {
+                        } else if (alpha < 24) {
                             change = alpha / 100;
-                        } else if (alpha < 28) {
-                            change = alpha / 50;
+                        } else if (alpha < 26) {
+                            change = alpha / 80;
+                        } else if (alpha < 29) {
+                            change = alpha / 60;
                         } else {
                             change = alpha / 30;
                             imageView.setImageResource(R.drawable.ic_lock_close_yellow_24dp);
@@ -76,6 +80,7 @@ public class MainActivity extends AppCompatActivity implements AudioManager.OnAu
                 });
             }
         });
+
     }
 
     @Override
@@ -134,9 +139,9 @@ public class MainActivity extends AppCompatActivity implements AudioManager.OnAu
 
         textView = new TextView(this);
         textView.setTextColor(Color.RED);
-        textView.setTextSize(getResources().getDisplayMetrics().density * 12);
+        textView.setTextSize(getResources().getDisplayMetrics().density * 10);
         textView.setTypeface(Typeface.defaultFromStyle(Typeface.ITALIC));
-        textView.setText("到站，下车了");
+        textView.setText("Miss You");
     }
 }
 

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
                 xmlns:tools="http://schemas.android.com/tools"
                 android:id="@+id/frameLayout"
                 android:layout_width="match_parent"
@@ -11,12 +12,16 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
-    <ImageView android:id="@+id/imageView"
-               android:layout_width="80dp"
-               android:layout_height="80dp"
-               android:layout_centerInParent="true"
-               android:contentDescription="@null"
-               tools:background="@drawable/ic_lock_open_yellow_24dp"/>
+    <!--<de.hdodenhof.circleimageview.CircleImageView
+            app:civ_border_color="#FFFF0000"
+            app:civ_border_width="2dp"-->
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_centerInParent="true"
+        android:contentDescription="@null"
+        tools:background="@drawable/ic_lock_open_yellow_24dp"/>
 
 
 </RelativeLayout>
